@@ -1,10 +1,10 @@
-#!/usr/bin/python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-import subprocess, os, sys
-from itertools import cycle, izip
+import subprocess, os, sys, base64
+from itertools import cycle
 
 rPlat = "https://xtreamtools.org/XCodes/main_xtreamcodes_reborn.tar.gz"
-rPackages = ["libcurl3", "libxslt1-dev", "libgeoip-dev", "e2fsprogs", "wget", "mcrypt", "nscd", "htop", "zip", "sshpass", "unzip", "mc", "python-paramiko"]
+rPackages = ["libcurl4", "libxslt1-dev", "libgeoip-dev", "e2fsprogs", "wget", "nscd", "htop", "zip", "sshpass", "unzip", "mc", "python3-paramiko"]
 rGeo = "https://xtreamtools.org/XCodes/GeoLite2.mmdb"
 
 def prepare():
@@ -13,19 +13,13 @@ def prepare():
         try: os.remove(rFile)
         except: pass
     os.system("apt-get update > /dev/null")
-    os.system("apt-get remove --auto-remove libcurl4 -y > /dev/null")
     for rPackage in rPackages: os.system("apt-get install %s -y > /dev/null" % rPackage)
-    os.system("wget -q -O /tmp/libpng12.deb https://xtreamtools.org/XCodes/libpng12-0_1.2.54-1ubuntu1_amd64.deb")
-    os.system("dpkg -i /tmp/libpng12.deb > /dev/null")
-    os.system("apt-get install -y > /dev/null") # Clean up above
-    try: os.remove("/tmp/libpng12.deb")
-    except: pass
     os.system("adduser --system --shell /bin/false --group --disabled-login xtreamcodes 2>/dev/null")
     if not os.path.exists("/home/xtreamcodes"): os.mkdir("/home/xtreamcodes")
     return True
         
 def install():
-    global rInstall, rPlat, rGeo
+    global rPlat, rGeo
     rURL = rPlat
     rNginx = "/home/xtreamcodes/iptv_xtream_codes/nginx/conf/nginx.conf"
     rNginxRtmp = "/home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/conf/nginx.conf"
@@ -93,16 +87,18 @@ def install():
 def encrypt(rHost="127.0.0.1", rUsername="user_iptvpro", rPassword="", rDatabase="xtream_iptvpro", rServerID=1, rPort=7999):
     try: os.remove("/home/xtreamcodes/iptv_xtream_codes/config")
     except: pass
-    rf = open('/home/xtreamcodes/iptv_xtream_codes/config', 'wb')
-    rf.write(''.join(chr(ord(c)^ord(k)) for c,k in izip('{\"host\":\"%s\",\"db_user\":\"%s\",\"db_pass\":\"%s\",\"db_name\":\"%s\",\"server_id\":\"%d\", \"db_port\":\"%d\"}' % (rHost, rUsername, rPassword, rDatabase, rServerID, rPort), cycle('5709650b0d7806074842c6de575025b1'))).encode('base64').replace('\n', ''))
-    rf.close()
+    data = '{"host":"%s","db_user":"%s","db_pass":"%s","db_name":"%s","server_id":"%d", "db_port":"%d"}' % (
+        rHost, rUsername, rPassword, rDatabase, rServerID, rPort)
+    encoded = ''.join(chr(ord(c)^ord(k)) for c,k in zip(data, cycle('5709650b0d7806074842c6de575025b1')))
+    with open('/home/xtreamcodes/iptv_xtream_codes/config', 'wb') as rf:
+        rf.write(base64.b64encode(encoded.encode()).decode().replace('\n', '').encode())
 
 
 def start():
     rIspOK = "/home/xtreamcodes/iptv_xtream_codes/wwwdir/includes/streaming.php"
     os.system('rm /usr/bin/ffmpeg')
     os.system('rm /usr/bin/ffprobe')
-    os.system('apt-get install unzip e2fsprogs python-paramiko -y')
+    os.system('apt-get install unzip e2fsprogs python3-paramiko -y')
     os.system('chattr -i /home/xtreamcodes/iptv_xtream_codes/GeoLite2.mmdb')
     os.system('wget "https://xtreamtools.org/XCodes/update.zip" -O /tmp/update.zip -o /dev/null')
     os.system('unzip /tmp/update.zip -d /tmp/update/ >/dev/null')

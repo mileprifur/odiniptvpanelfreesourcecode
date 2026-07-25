@@ -1,6 +1,6 @@
-#!/usr/bin/python3.10
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# update panel
+# update youtube-dl
 import subprocess, os, sys
 
 def updateyoutube():
@@ -16,4 +16,3 @@ def updateyoutube():
 
 if __name__ == "__main__":
     updateyoutube()
-    #start()

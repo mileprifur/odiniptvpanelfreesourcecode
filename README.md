@@ -1,22 +1,28 @@
 # Odin IpTV Panel Free Source Code
-Require python 3.10 or + and python requests module
-for install python 3.10
+Require python 3.10+ and python requests module
+For install python 3.10+
 
-this installer work on Ubuntu Centos Fedora and Debian all stable version maintened
+This installer works on Ubuntu, CentOS, Fedora and Debian all stable versions maintained.
 
-The installer are still in development
+The installer is still in development.
 Please wait for this message to be erased
-or install your risk and danger
+or install at your own risk and danger.
 
-ubuntu 22.04 online
+## Ubuntu 24.04 Support
 
 ```
 sudo apt update && sudo apt dist-upgrade -y
 sudo apt install python3-dev python3-requests python3-pip -y
 ```
 
-Ubuntu 20.04 use ppa
+## Ubuntu 22.04
 
+```
+sudo apt update && sudo apt dist-upgrade -y
+sudo apt install python3-dev python3-requests python3-pip -y
+```
+
+## Ubuntu 20.04 use ppa
 
 ```
 sudo apt update && sudo apt dist-upgrade -y
@@ -30,7 +36,6 @@ sudo pip3.10 install --upgrade pip setuptools wheel
 sudo pip3.10 install requests
 ```
 
-
 For Fedora 37/38/39 and 40
 
 ```
@@ -43,7 +48,6 @@ sudo pip3.10 install requests
 ```
 
 manual build for Centos
-
 
 ```
 sudo yum -y install epel-release
@@ -66,7 +70,7 @@ sudo apt update && sudo apt dist-upgrade -y
 sudo apt install build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev libsqlite3-dev wget libbz2-dev
 ```
 
-ptyhon3.10 build
+python3.10 build
 
 ```
 cd
@@ -86,23 +90,19 @@ sudo pip3.10 install --upgrade pip setuptools wheel
 sudo pip3.10 install requests
 ```
 
-
-for start installer for main or sub
-
+To start installer for main or sub
 
 ```
-sudo wget -O /root/install.py3  https://github.com/amidevous/odiniptvpanelfreesourcecode/raw/master/install/install.py3 && sudo python3.10 /root/install.py3
+sudo wget -O /root/install.py3  https://github.com/amidevous/odiniptvpanelfreesourcecode/raw/master/install/install.py3 && sudo python3 /root/install.py3
 ```
 
-silent installer for main online recommend
+Silent installer for main (recommended)
 
 ```
-sudo wget -O /root/install-silent.py3  https://github.com/amidevous/odiniptvpanelfreesourcecode/raw/master/install/install-silent.py3 && sudo python3.10 /root/install-silent.py3
+sudo wget -O /root/install-silent.py3  https://github.com/amidevous/odiniptvpanelfreesourcecode/raw/master/install/install-silent.py3 && sudo python3 /root/install-silent.py3
 ```
 
-
-
-debug service not start stop all and check problem
+Debug service not starting - stop all and check problem
 
 ```
 # stop all
@@ -113,8 +113,8 @@ sudo kill $(ps aux | grep 'xtreamcodes' | grep -v grep | grep -v 'start_services
 sleep 1
 sudo kill $(ps aux | grep 'xtreamcodes' | grep -v grep | grep -v 'start_services.sh' | awk '{print $2}') 2>/dev/null
 sleep 1
-# restart mariadb (d'ont use systemd)
-service restart mariadb
+# restart mariadb (use systemctl on Ubuntu 24.04+)
+systemctl restart mariadb 2>/dev/null || service restart mariadb
 # check php work
 sudo -u xtreamcodes /home/xtreamcodes/iptv_xtream_codes/php/bin/php --version
 # check nginx and nginx_rtmp
@@ -122,14 +122,9 @@ sudo -u xtreamcodes /home/xtreamcodes/iptv_xtream_codes/php/bin/php --version
 /home/xtreamcodes/iptv_xtream_codes/nginx_rtmp/sbin/nginx_rtmp -version
 ```
 
+If error: sudo: /home/xtreamcodes/iptv_xtream_codes/php/bin/php: command not found
 
-
-
-if error
-
-sudo: /home/xtreamcodes/iptv_xtream_codes/php/bin/php: command not found
-
-full binary rebuild require
+Full binary rebuild required
 
 ```
 wget https://github.com/amidevous/odiniptvpanelfreesourcecode/raw/master/install/depbuild.sh -O /root/depbuild.sh
@@ -139,8 +134,7 @@ bash /root/php7.2rebuild.sh
 /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 ```
 
-
-if nginx and nginx_rtmp error minimal rebuild require
+If nginx and nginx_rtmp error - minimal rebuild required
 
 ```
 wget https://github.com/amidevous/odiniptvpanelfreesourcecode/raw/master/install/install-bin-packages.sh -O /root/install-bin-packages.sh
@@ -148,21 +142,13 @@ bash /root/install-bin-packages.sh
 /home/xtreamcodes/iptv_xtream_codes/start_services.sh
 ```
 
+## Changes for Ubuntu 24.04
 
+The codebase has been updated to support Ubuntu 24.04 with the following changes:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+1. **Python 2→3 Migration**: All Python scripts now use Python 3 syntax (print function, urllib.request, base64 module, zip instead of izip)
+2. **OpenSSL 3.x Support**: Nginx and PHP compilation scripts now detect Ubuntu 24.04 and use OpenSSL 3.0.x instead of 1.1.1h
+3. **Systemd Compatibility**: Service management scripts now detect systemd and use systemctl commands where appropriate
+4. **Docker Support**: Added `Dockerfile_Ubuntu-24.04` for containerized deployment
+5. **Package Updates**: Updated package names for Ubuntu 24.04 (e.g., libcurl3→libcurl4, python-paramiko→python3-paramiko)
+6. **Updated Dependencies**: All dependencies updated to versions compatible with Ubuntu 24.04's newer libraries

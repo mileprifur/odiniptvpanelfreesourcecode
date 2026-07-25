@@ -1,4 +1,4 @@
-#!/usr/bin/env python3.10
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import os
 from urllib.request import Request, urlopen
@@ -11,7 +11,7 @@ import sys
 import time
 import json
 import base64
-from itertools import cycle, zip_longest as izip
+from itertools import cycle
 from itertools import zip_longest
 from datetime import datetime
 rFbremake = "https://github.com/amidevous/odiniptvpanelfreesourcecode/releases/download/download/sub_xtreamcodes_reborn_original.tar.gz"

@@ -45,14 +45,14 @@ if [[ "$OS" = "CentOs" && "$VER" = "7" && "$ARCH" == "x86_64" ||
 "$OS" = "CentOS-Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ||
 "$OS" = "CentOS-Stream" && "$VER" = "9" && "$ARCH" == "x86_64" ||
 "$OS" = "Fedora" && ("$VER" = "37" || "$VER" = "38" || "$VER" = "39" || "$VER" = "40" ) && "$ARCH" == "x86_64" ||
-"$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
+"$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" || "$VER" = "24.04" ) && "$ARCH" == "x86_64" ||
 "$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
 echo "Ok."
 else
     echo "Sorry, this OS is not supported by Xtream UI."
     exit 1
 fi
-if  [[ "$OS" = "Ubuntu" && "$VER" = "22.04" ]] ; then
+if  [[ "$OS" = "Ubuntu" && ("$VER" = "22.04" || "$VER" = "24.04") ]] ; then
 sed -i "s|#\$nrconf{verbosity} = 2;|\$nrconf{verbosity} = 0;|" /etc/needrestart/needrestart.conf
 sed -i "s|#\$nrconf{restart} = 'i';|\$nrconf{restart} = 'a';|" /etc/needrestart/needrestart.conf
 fi
@@ -115,8 +115,14 @@ rm -rf *
 rm -rf /home/xtreamcodes/iptv_xtream_codes/phpbuild/ngx_http_geoip2_module
 rm -rf /home/xtreamcodes/iptv_xtream_codes/phpbuild/nginx-1.24.0
 rm -rf /home/xtreamcodes/iptv_xtream_codes/phpbuild/openssl-OpenSSL_1_1_1h
-wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1h.tar.gz -O /home/xtreamcodes/iptv_xtream_codes/phpbuild/OpenSSL_1_1_1h.tar.gz
-tar -xzvf /home/xtreamcodes/iptv_xtream_codes/phpbuild/OpenSSL_1_1_1h.tar.gz
+if [[ "$OS" = "Ubuntu" && "$VER" = "24.04" ]]; then
+    wget https://github.com/openssl/openssl/releases/download/openssl-3.0.14/openssl-3.0.14.tar.gz -O /home/xtreamcodes/iptv_xtream_codes/phpbuild/openssl-3.0.14.tar.gz
+    tar -xzvf /home/xtreamcodes/iptv_xtream_codes/phpbuild/openssl-3.0.14.tar.gz
+    mv /home/xtreamcodes/iptv_xtream_codes/phpbuild/openssl-3.0.14 /home/xtreamcodes/iptv_xtream_codes/phpbuild/openssl-OpenSSL_1_1_1h
+else
+    wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1h.tar.gz -O /home/xtreamcodes/iptv_xtream_codes/phpbuild/OpenSSL_1_1_1h.tar.gz
+    tar -xzvf /home/xtreamcodes/iptv_xtream_codes/phpbuild/OpenSSL_1_1_1h.tar.gz
+fi
 wget http://nginx.org/download/nginx-1.24.0.tar.gz -O /home/xtreamcodes/iptv_xtream_codes/phpbuild/nginx-1.24.0.tar.gz
 tar -xzvf /home/xtreamcodes/iptv_xtream_codes/phpbuild/nginx-1.24.0.tar.gz
 git clone https://github.com/leev/ngx_http_geoip2_module.git /home/xtreamcodes/iptv_xtream_codes/phpbuild/ngx_http_geoip2_module
@@ -203,8 +209,14 @@ cd /home/xtreamcodes/iptv_xtream_codes/phpbuild/
 rm -rf /home/xtreamcodes/iptv_xtream_codes/phpbuild/ngx_http_geoip2_module
 rm -rf /home/xtreamcodes/iptv_xtream_codes/phpbuild/nginx_rtmp-1.24.0
 rm -rf /home/xtreamcodes/iptv_xtream_codes/phpbuild/openssl-OpenSSL_1_1_1h
-wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1h.tar.gz -O /home/xtreamcodes/iptv_xtream_codes/phpbuild/OpenSSL_1_1_1h.tar.gz
-tar -xzvf OpenSSL_1_1_1h.tar.gz
+if [[ "$OS" = "Ubuntu" && "$VER" = "24.04" ]]; then
+    wget https://github.com/openssl/openssl/releases/download/openssl-3.0.14/openssl-3.0.14.tar.gz -O /home/xtreamcodes/iptv_xtream_codes/phpbuild/OpenSSL_1_1_1h.tar.gz
+    tar -xzvf OpenSSL_1_1_1h.tar.gz
+    mv /home/xtreamcodes/iptv_xtream_codes/phpbuild/openssl-3.0.14 /home/xtreamcodes/iptv_xtream_codes/phpbuild/openssl-OpenSSL_1_1_1h
+else
+    wget https://github.com/openssl/openssl/archive/OpenSSL_1_1_1h.tar.gz -O /home/xtreamcodes/iptv_xtream_codes/phpbuild/OpenSSL_1_1_1h.tar.gz
+    tar -xzvf OpenSSL_1_1_1h.tar.gz
+fi
 wget http://nginx.org/download/nginx-1.24.0.tar.gz -O /home/xtreamcodes/iptv_xtream_codes/phpbuild/nginx-1.24.0.tar.gz
 mkdir -p /home/xtreamcodes/iptv_xtream_codes/phpbuild/nginx_rtmp-1.24.0
 tar -xzvf nginx-1.24.0.tar.gz -C "/home/xtreamcodes/iptv_xtream_codes/phpbuild/nginx_rtmp-1.24.0"

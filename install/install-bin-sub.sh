@@ -46,7 +46,7 @@ if [[ "$OS" = "CentOs" && "$VER" = "7" && "$ARCH" == "x86_64" ||
 "$OS" = "CentOS-Stream" && "$VER" = "8" && "$ARCH" == "x86_64" ||
 "$OS" = "CentOS-Stream" && "$VER" = "9" && "$ARCH" == "x86_64" ||
 "$OS" = "Fedora" && ("$VER" = "36" || "$VER" = "37" || "$VER" = "38" ) && "$ARCH" == "x86_64" ||
-"$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" ) && "$ARCH" == "x86_64" ||
+"$OS" = "Ubuntu" && ("$VER" = "18.04" || "$VER" = "20.04" || "$VER" = "22.04" || "$VER" = "24.04" ) && "$ARCH" == "x86_64" ||
 "$OS" = "debian" && ("$VER" = "10" || "$VER" = "11" ) && "$ARCH" == "x86_64" ]] ; then
 echo "Ok."
 else
@@ -329,7 +329,7 @@ if [[ "$OS" = "Ubuntu" || "$OS" = "debian" ]]; then
 	apt-get -y install build-essential
   	mkdir -p /home/xtreamcodes/iptv_xtream_codes/phpbuild/
   	cd /home/xtreamcodes/iptv_xtream_codes/phpbuild/
-	if [[ "$VER" = "22.04" ]]; then
+	if [[ "$VER" = "22.04" || "$VER" = "24.04" ]]; then
  		rm -f /etc/init.d/mariadb
 		DEBIAN_FRONTEND=noninteractive apt-get -y install daemonize mariadb-client unzip libmaxminddb0 python-is-python3 nano net-tools
   		DEBIAN_FRONTEND=noninteractive apt-get -y install python

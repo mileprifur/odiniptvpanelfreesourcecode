@@ -1,0 +1,19 @@
+FROM ubuntu:24.04
+RUN rm -rf /var/lib/apt/lists/*
+RUN DEBIAN_FRONTEND=noninteractive \
+ apt-get update \
+ && DEBIAN_FRONTEND=noninteractive apt-get -y install ubuntu-minimal ssh openssh-server python3 net-tools needrestart passwd bash-completion dos2unix wget python3-requests python3-dev python3-pip \
+ && DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential cdbs devscripts equivs fakeroot debhelper lintian dh-make dput
+RUN sed -i "s|#\$nrconf{verbosity} = 2;|\$nrconf{verbosity} = 0;|" /etc/needrestart/needrestart.conf
+RUN sed -i "s|#\$nrconf{restart} = 'i';|\$nrconf{restart} = 'a';|" /etc/needrestart/needrestart.conf
+RUN mkdir /var/run/sshd
+RUN systemctl enable ssh
+RUN echo 'root:Ash82qc44L6ZVv' | chpasswd
+RUN sed -i 's|#PermitRootLogin no|PermitRootLogin yes|' "/etc/ssh/sshd_config"
+RUN sed -i 's|PermitRootLogin no|PermitRootLogin yes|' "/etc/ssh/sshd_config"
+RUN sed -i 's|#PermitRootLogin yes|PermitRootLogin yes|' "/etc/ssh/sshd_config"
+RUN sed -i 's|#PermitRootLogin prohibit-password|PermitRootLogin yes|' "/etc/ssh/sshd_config"
+RUN sed -i 's|PermitRootLogin prohibit-password|PermitRootLogin yes|' "/etc/ssh/sshd_config"
+RUN sed -i 's|#PasswordAuthentication yes|PasswordAuthentication yes|' "/etc/ssh/sshd_config"
+EXPOSE 22
+CMD ["/usr/sbin/sshd","-D"]

@@ -1,6 +1,6 @@
 import paramiko, os, socket, time, json, re
 from config import decrypt
-from urllib import urlopen
+from urllib.request import urlopen
 
 # Status: 0 - Not Started       1 - Started         2 - Done
 
@@ -40,11 +40,11 @@ def installBalancer(rDetails):
         writeDetails(rDetails)
         return True
     try:
-        rIn, rOut, rErr = rClient.exec_command("sudo apt-get install python -y")
+        rIn, rOut, rErr = rClient.exec_command("sudo apt-get install python3 -y")
         rStatus = rOut.channel.recv_exit_status()
         rIn, rOut, rErr = rClient.exec_command("sudo wget -q \"%s\" -O \"/tmp/Ibalancer.py\"" % rIbalancer)
         rStatus = rOut.channel.recv_exit_status()
-        rIn, rOut, rErr = rClient.exec_command("sudo python /tmp/Ibalancer.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d %d %d %d" % (rIP, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"]), int(rDetails["http_broadcast_port"]), int(rDetails["https_broadcast_port"]), int(rDetails["rtmp_port"])))
+        rIn, rOut, rErr = rClient.exec_command("sudo python3 /tmp/Ibalancer.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d %d %d %d" % (rIP, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"]), int(rDetails["http_broadcast_port"]), int(rDetails["https_broadcast_port"]), int(rDetails["rtmp_port"])))
         rStatus = rOut.channel.recv_exit_status()
     except: pass
     rDetails["status"] = 2
@@ -83,11 +83,11 @@ def fbReload(rDetails):
         writeDetails(rDetails)
         return True
     try:
-        rIn, rOut, rErr = rClient.exec_command("sudo apt-get install python -y")
+        rIn, rOut, rErr = rClient.exec_command("sudo apt-get install python3 -y")
         rStatus = rOut.channel.recv_exit_status()
         rIn, rOut, rErr = rClient.exec_command("sudo wget -q \"%s\" -O \"/tmp/breload.py\"" % rBreload)
         rStatus = rOut.channel.recv_exit_status()
-        rIn, rOut, rErr = rClient.exec_command("sudo python /tmp/breload.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d" % (rIP, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"])))
+        rIn, rOut, rErr = rClient.exec_command("sudo python3 /tmp/breload.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d" % (rIP, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"])))
         rStatus = rOut.channel.recv_exit_status()
     except: pass
     rDetails["status"] = 2
@@ -102,7 +102,7 @@ def fsReload(rDetails):
     except: return False
     try:
         rClient.exec_command("sudo cp \"%s\" \"/tmp/sreload.py\"" % rSreload)
-        rClient.exec_command("sudo python /tmp/sreload.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d" % (rIPlocal, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"])))
+        rClient.exec_command("sudo python3 /tmp/sreload.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d" % (rIPlocal, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"])))
     except: pass
     try: os.remove("%s%d.json" % (rTrova, int(rDetails["id"])))
     except: pass
@@ -119,11 +119,11 @@ def fbRemake(rDetails):
         writeDetails(rDetails)
         return True
     try:
-        rIn, rOut, rErr = rClient.exec_command("sudo apt-get install python -y")
+        rIn, rOut, rErr = rClient.exec_command("sudo apt-get install python3 -y")
         rStatus = rOut.channel.recv_exit_status()
         rIn, rOut, rErr = rClient.exec_command("sudo wget -q \"%s\" -O \"/tmp/fbremake.py\"" % rFbremake)
         rStatus = rOut.channel.recv_exit_status()
-        rIn, rOut, rErr = rClient.exec_command("sudo python /tmp/fbremake.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d" % (rIP, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"])))
+        rIn, rOut, rErr = rClient.exec_command("sudo python3 /tmp/fbremake.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d" % (rIP, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"])))
         rStatus = rOut.channel.recv_exit_status()
     except: pass
     rDetails["status"] = 2
@@ -138,7 +138,7 @@ def fsRemake(rDetails):
     except: return False
     try:
         rClient.exec_command("sudo cp \"%s\" \"/tmp/fsremake.py\"" % rFsremake)
-        rClient.exec_command("sudo python /tmp/fsremake.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d" % (rIPlocal, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"])))
+        rClient.exec_command("sudo python3 /tmp/fsremake.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d" % (rIPlocal, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"])))
     except: pass
     try: os.remove("%s%d.json" % (rTrova, int(rDetails["id"])))
     except: pass
@@ -155,11 +155,11 @@ def Ugeolite(rDetails):
         writeDetails(rDetails)
         return True
     try:
-        rIn, rOut, rErr = rClient.exec_command("sudo apt-get install python -y")
+        rIn, rOut, rErr = rClient.exec_command("sudo apt-get install python3 -y")
         rStatus = rOut.channel.recv_exit_status()
         rIn, rOut, rErr = rClient.exec_command("sudo wget -q \"%s\" -O \"/tmp/ugeolite.py\"" % rUgeolite2)
         rStatus = rOut.channel.recv_exit_status()
-        rIn, rOut, rErr = rClient.exec_command("sudo python /tmp/ugeolite.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d" % (rIP, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"])))
+        rIn, rOut, rErr = rClient.exec_command("sudo python3 /tmp/ugeolite.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d" % (rIP, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"])))
         rStatus = rOut.channel.recv_exit_status()
     except: pass
     rDetails["status"] = 2
@@ -178,11 +178,11 @@ def Uyoutube(rDetails):
         writeDetails(rDetails)
         return True
     try:
-        rIn, rOut, rErr = rClient.exec_command("sudo apt-get install python -y")
+        rIn, rOut, rErr = rClient.exec_command("sudo apt-get install python3 -y")
         rStatus = rOut.channel.recv_exit_status()
         rIn, rOut, rErr = rClient.exec_command("sudo wget -q \"%s\" -O \"/tmp/uyoutube.py\"" % rYoutube2)
         rStatus = rOut.channel.recv_exit_status()
-        rIn, rOut, rErr = rClient.exec_command("sudo python /tmp/uyoutube.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d" % (rIP, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"])))
+        rIn, rOut, rErr = rClient.exec_command("sudo python3 /tmp/uyoutube.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d" % (rIP, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"])))
         rStatus = rOut.channel.recv_exit_status()
     except: pass
     rDetails["status"] = 2
@@ -197,7 +197,7 @@ def Urelease(rDetails):
     except: return False
     try:
         rClient.exec_command("sudo cp \"%s\" \"/tmp/urelease.py\"" % rUrelease)
-        rClient.exec_command("sudo python /tmp/urelease.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d" % (rIPlocal, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"])))
+        rClient.exec_command("sudo python3 /tmp/urelease.py \"%s\" \"%s\" \"%s\" \"%s\" \"%s\" %d" % (rIPlocal, rConfig["db_port"], rConfig["db_user"], rConfig["db_pass"], rConfig["db_name"], int(rDetails["id"])))
     except: pass
     try: os.remove("%s%d.json" % (rTrova, int(rDetails["id"])))
     except: pass

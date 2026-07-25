@@ -1,6 +1,6 @@
-#!/usr/bin/python3.10
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# update panel
+# update geolite
 import subprocess, os, sys
 
 def updategeolite():
@@ -12,4 +12,3 @@ def start():
 
 if __name__ == "__main__":
     updategeolite()
-    #start()

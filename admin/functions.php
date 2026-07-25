@@ -158,7 +158,7 @@ function sortArrayByArray($rArray, $rSort)
 }
 function startcmd()
 {
-    echo shell_exec("/usr/bin/python " . MAIN_DIR . "pytools/balancer.py >/dev/null 2>&1 &");
+echo shell_exec("/usr/bin/python3 " . MAIN_DIR . "pytools/balancer.py >/dev/null 2>&1 &");
 }
 function updateGeoLite2()
 {
@@ -507,7 +507,7 @@ function getBackups()
 }
 function parseRelease($rRelease)
 {
-    $rCommand = "/usr/bin/python " . MAIN_DIR . "pytools/release.py \"" . escapeshellcmd($rRelease) . "\"";
+$rCommand = "/usr/bin/python3 " . MAIN_DIR . "pytools/release.py \"" . escapeshellcmd($rRelease) . "\"";
     return json_decode(shell_exec($rCommand), true);
 }
 function listDir($rServerID, $rDirectory, $rAllowed = NULL)

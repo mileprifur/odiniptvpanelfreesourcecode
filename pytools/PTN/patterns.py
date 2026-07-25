@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 patterns = [
@@ -11,7 +11,7 @@ patterns = [
                  'IP|CamRip|W[EB]BRip|BluRay|DvDScr|hdtv)')),
     ('codec', '(xvid|[hx]\.?26[45])'),
     ('audio', ('(MP3|DD5\.?1|Dual[\- ]Audio|LiNE|H?DTS|AAC(?:\.?2\.0)'
-               '?|AC3(?:\.5\.1)?)')),
+               '?|AC3(?:5\.1)?)')),
     ('group', '(- ?([^-]+(?:-={[^-]+-?$)?))$'),
     ('region', 'R[0-9]'),
     ('extended', '(EXTENDED(:?.CUT)?)'),

@@ -1,11 +1,9 @@
-#!/usr/bin/env python3.10
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# sudo wget -O /root/install.py3  https://github.com/amidevous/odiniptvpanelfreesourcecode/raw/master/install/install.py3 && && sudo python3.10 /root/install.py3
+# sudo wget -O /root/install.py3  https://github.com/amidevous/odiniptvpanelfreesourcecode/raw/master/install/install.py3 && sudo python3 /root/install.py3
 #
 import os
-# os.system('pip install requests >/dev/null')
-# import requests
 from urllib.request import Request, urlopen
 import random
 import shutil
@@ -16,8 +14,7 @@ import sys
 import time
 import json
 import base64
-# import urllib2
-from itertools import cycle, zip_longest as izip
+from itertools import cycle
 from itertools import zip_longest
 from datetime import datetime
 rDownloadURL = {"main": "https://github.com/amidevous/odiniptvpanelfreesourcecode/raw/master/install/install-bin-main.sh",
@@ -53,7 +50,7 @@ def getIP():
 
 def getVersion():
     try:
-        return subprocess.check_output("lsb_release -d".split()).split(":")[-1].strip()
+        return subprocess.check_output("lsb_release -d".split()).decode().split(":")[-1].strip()
     except:
         return ""
 
@@ -74,16 +71,11 @@ def printc(rText, rColour=col.OKBLUE, rPadding=0):
 
 
 def prepare(rType="MAIN"):
-    #global rPackages
-    #if rType != "MAIN": rPackages = rPackages[:-1]
     printc("Preparing Installation")
     try:
         subprocess.check_output("getent passwd xtreamcodes > /dev/null".split())
     except:
-        # Create User
         printc("Creating user")
-        
-    # Create User
     printc("Creating user")
     os.system("adduser --system --shell /bin/false --group --disabled-login xtreamcodes >/dev/null 2>&1")
     os.system("adduser --system --shell /bin/false xtreamcodes >/dev/null 2>&1")
@@ -144,19 +136,16 @@ def mysql(rUsername, rPassword):
     os.system("update-rc.d mariadb defaults >/dev/null 2>&1")
     os.system("service mariadb restart >/dev/null 2>&1")
         
-    #printc("Enter MySQL Root Password:", col.WARNING)
     for i in range(5):
-        rMySQLRoot = "" #raw_input("  ")
+        rMySQLRoot = ""
         print (" ")
-                               
         if len(rMySQLRoot) > 0: rExtra = " -p%s" % rMySQLRoot
-             
         else: rExtra = ""
         printc("Drop existing & create database? Y/N", col.WARNING)
-        if input("  ").upper() == "Y": rDrop = True
-                        
-             
-        else: rDrop = False
+        try:
+            rDrop = input("  ").upper() == "Y"
+        except:
+            rDrop = False
         try:
             if rDrop:
                 os.system("rm -rf /etc/systemd/system/mariadb.service.d /etc/systemd/system/multi-user.target.wants/mariadb.service >/dev/null 2>&1")
@@ -177,11 +166,8 @@ def mysql(rUsername, rPassword):
                     'mysql -u root%s -e "DROP DATABASE IF EXISTS xtream_iptvpro; CREATE DATABASE IF NOT EXISTS xtream_iptvpro;" 2> /dev/null' % rExtra)
                 os.system(
                     "mysql -u root%s xtream_iptvpro < /home/xtreamcodes/iptv_xtream_codes/database.sql 2> /dev/null" % rExtra)
-
-                # UPDATE V46 CREATE TABLE ODIN_BLOCKER
                 os.system(
                     'mysql -u root%s -e "USE xtream_iptvpro; DROP TABLE IF EXISTS odin_blocker; CREATE TABLE odin_blocker (id int(11) NOT NULL AUTO_INCREMENT,timestamp datetime DEFAULT NULL,ip varchar(255) DEFAULT NULL,PRIMARY KEY (id));" 2> /dev/null' % rExtra)
-
                 os.system(
                     'mysql -u root%s -e "USE xtream_iptvpro; UPDATE settings SET live_streaming_pass = \'%s\', unique_id = \'%s\', crypt_load_balancing = \'%s\';" 2> /dev/null' % (
                         rExtra, generate(20), generate(10), generate(20)))
@@ -206,9 +192,6 @@ def mysql(rUsername, rPassword):
 def encrypt(rHost="127.0.0.1", rUsername="user_iptvpro", rPassword="", rDatabase="xtream_iptvpro", rServerID=1,
             rPort=7999):
     printc("Encrypting...")
-    # try: os.remove(rConfigPath)
-    # except: pass
-
     with open(rConfigPath, 'wb') as rf:
         data = ''.join(chr(ord(c) ^ ord(k)) for c, k in
                        zip('{"host":"%s","db_user":"%s","db_pass":"%s","db_name":"%s","server_id":"%d", "db_port":"%d"}' % (
@@ -298,20 +281,14 @@ def modifyNginx():
 
 
 if __name__ == "__main__":
-    #os.system('clear')
-    #installsscreen()
-    printc("ODIN - CLEAN MARIADB INSTALLATION TO Ubuntu 18.04", col.OKGREEN, 2)
+    printc("ODIN - CLEAN MARIADB INSTALLATION (Ubuntu 18.04-24.04)", col.OKGREEN, 2)
     try:
         rType = input("  INSTALLATION TYPE [MAIN, LB]: ")
     except KeyboardInterrupt:
         print("\nExiting...")
         sys.exit(0)
-    
-    #rType = input("  INSTALLATION TYPE [MAIN, LB]: ")
     print(" ")
-    #rType = "MAIN"
     if rType.upper() in ["MAIN", "LB"]:
-    #rType.upper() = MAIN
         if rType.upper() == "LB":
             rHost = input("  Main Server IP Address: ")
             rPassword = input("  MySQL Password: ")
@@ -350,4 +327,3 @@ if __name__ == "__main__":
             printc("Invalid entries", col.FAIL)
     else:
         printc("Invalid installation type", col.FAIL)
-

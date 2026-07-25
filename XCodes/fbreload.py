@@ -1,4 +1,4 @@
-#!/usr/bin/python3.10
+#!/usr/bin/env python3
 import os
 from urllib.request import Request, urlopen
 import random
@@ -10,7 +10,7 @@ import sys
 import time
 import json
 import base64
-from itertools import cycle, zip_longest as izip
+from itertools import cycle
 from itertools import zip_longest
 from datetime import datetime
 rConfigPath = '/home/xtreamcodes/iptv_xtream_codes/config'
@@ -32,7 +32,6 @@ def encrypt(rHost="127.0.0.1", rUsername="user_iptvpro", rPassword="", rDatabase
 def start():
     os.system("chown xtreamcodes:xtreamcodes /home/xtreamcodes/iptv_xtream_codes/config")
     os.system("chmod 777 /home/xtreamcodes/iptv_xtream_codes/config")
-    #os.system("/home/xtreamcodes/iptv_xtream_codes/start_services.sh 2>/dev/null")
 
 if __name__ == "__main__":
     rHost = sys.argv[1]
